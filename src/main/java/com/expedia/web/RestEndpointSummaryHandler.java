@@ -17,9 +17,8 @@ public class RestEndpointSummaryHandler implements HttpHandler {
             response.append("<br/>");
         }
         String responseStr = "<html><body>Size = " + size + "<br/>" + response.toString() + "</body></html>";
-        System.out.println(responseStr);
 
-        exchange.getResponseHeaders().add("Content-Type", "application/xml");
+        exchange.getResponseHeaders().add("Content-Type", "text/html");
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, responseStr.length());
 
         OutputStream os = exchange.getResponseBody();
