@@ -14,15 +14,16 @@ public class RestEndpointSummaryHandler implements HttpHandler {
         StringBuffer response = new StringBuffer();
         for (String str : RestEndpointHandler.map.values()) {
             response.append(str);
+            response.append("<br/>");
         }
-        String responseStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><counter>"+(size)+"</counter>"+response.toString();
+        String responseStr = "<html><body>Size = " + size + "<br/>" + response.toString() + "</body></html>";
+        System.out.println(responseStr);
 
         exchange.getResponseHeaders().add("Content-Type", "application/xml");
-        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length());
+        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, responseStr.length());
 
         OutputStream os = exchange.getResponseBody();
         os.write(responseStr.getBytes());
         exchange.close();
-
     }
 }

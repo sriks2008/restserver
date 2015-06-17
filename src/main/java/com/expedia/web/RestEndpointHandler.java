@@ -18,9 +18,9 @@ public class RestEndpointHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String input=exchange.getRequestURI().toASCIIString();//get the URL
+        String input=exchange.getRequestURI().toASCIIString();
         Map<String, Object> params = (Map<String, Object>)exchange.getAttribute("parameters");
-        System.out.println("Request Method: " + exchange.getRequestMethod());
+        System.out.println("Request Method: " + exchange.getRequestMethod() + " URI: " + input);
         Headers headers = exchange.getRequestHeaders();
         for (String headerName : headers.keySet()) {
             System.out.println("Header : " + headerName + " " + headers.get(headerName));
@@ -30,8 +30,7 @@ public class RestEndpointHandler implements HttpHandler {
         exchange.getResponseHeaders().add("Content-Type", "application/xml");
         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length());
 
-        String body = getDataFromBody(exchange);
-        map.put(invokeCount++, body);
+        map.put(invokeCount++, params.toString());
 
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
@@ -39,7 +38,6 @@ public class RestEndpointHandler implements HttpHandler {
     }
 
     public String getDataFromBody(HttpExchange exchange) throws IOException {
-        String qry;
         InputStream in = exchange.getRequestBody();
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
